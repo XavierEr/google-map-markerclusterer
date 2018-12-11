@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>google-map-clustermarker Demo</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <!-- <script src="../node_modules/@polymer/iron-demo-helpers/demo-snippet.js"></script> -->
+
+    <!-- <script type="module" src="../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script> -->
+    <!-- <script type="module" src="../../../@polymer/iron-demo-helpers/demo-snippet.js"></script> -->
+
+    <script src="http://timeu.github.io/google-map-markerclusterer/components/google-map-markerclusterer/demo/data.json" type="text/javascript"></script>
+    <script type="module" src="../node_modules/@em-polymer/google-map/google-map.js"></script>
+    <script type="module" src="./markerclusterer-container.js"></script>
+    <script type="module" src="./my-custom-marker.js"></script>
+    <script type="module" src="./my-custom-clustericon.js"></script>
+    <style>
+      body {
+        margin: 0;
+        height: 100%;
+        padding: 10px 20px 20px;
+        font-family: Arial;
+        font-size: 16px;
+      }
+    </style>
+
+    <script type="module">
+function getMarkers() {
+  var markers = [];
+
+  var imageUrl = 'http://chart.apis.google.com/chart?cht=mm&chs=24x32&' +
+    'chco=FFFFFF,008CFF,000000&ext=.png';
+  var markerImage = new google.maps.MarkerImage(imageUrl,
+    new google.maps.Size(24, 32));
+
+  for (var i = 0; i < 1000; ++i) {
+    var latLng = new google.maps.LatLng(data.photos[i].latitude,
+        data.photos[i].longitude)
+    var marker = new google.maps.Marker({
+      position: latLng,
+      icon: markerImage
+    });
+    markers.push(marker);
+  }
+  return markers;
+}
+
+function getCustomMarkers() {
+  var markers = [];
+
+  for (var i = 0; i < 1000; ++i) {
+    var latLng = new google.maps.LatLng(data.photos[i].latitude,data.photos[i].longitude)
+    var marker = document.createElement("my-custom-marker");
+    marker._enableProperties();
+    marker.position = latLng;
+    markers.push(marker);
+  }
+  return markers;
+}
+
+function refreshMap() {
+  markers = getMarkers();
+}
+</script>
+  </head>
+  <body>
+
+    <h3>An example of `google-map-clustermarker':</h3>
+    <markerclusterer-container  id="default_markers"></markerclusterer-container>
+
+    <h3>Custom markers:</h3>
+
+    <markerclusterer-container id="custom_markers"></markerclusterer-container>
+
+    <h3>Custom markers and custom cluster:</h3>
+    <markerclusterer-container id="custom_cluster">
+      <my-custom-clustericon slot="clustericon"></my-custom-clustericon>
+    </markerclusterer-container>
+
+    <script type="module">
+var markerClusterer = document.querySelector('#default_markers');
+var markerClustererCustom = document.querySelector('#custom_markers');
+var markerClustererCustom2 = document.querySelector('#custom_cluster');
+markerClusterer.addEventListener('google-map-ready', function(e) {
+  this.markers = getMarkers();
+});
+markerClustererCustom.addEventListener('google-map-ready', function(e) {
+  this.markers = getCustomMarkers();
+});
+markerClustererCustom2.addEventListener('google-map-ready', function(e) {
+  this.markers = getCustomMarkers();
+});
+</script>
+  </body>
+</html>
