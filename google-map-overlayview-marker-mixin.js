@@ -84,10 +84,11 @@ export const GoogleMapOverlayviewMarkerMixin = dedupingMixin((superClass) => {
     */
     update(position, size) {
       const projection = this.overlay.getProjection();
-      const mapPos = projection.fromLatLngToDivPixel(position);
-
-      this.style.left = (mapPos.x - size / 2) + 'px';
-      this.style.top = (mapPos.y - size / 2) + 'px';
+      if( projection ) {
+        const mapPos = projection.fromLatLngToDivPixel(position), style = this.style;
+        style.left = (mapPos.x - size / 2) + 'px';
+        style.top = (mapPos.y - size / 2) + 'px';
+      }
     }
   };
 
