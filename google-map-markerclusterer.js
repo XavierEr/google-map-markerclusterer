@@ -178,24 +178,17 @@ class GoogleMapMarkerclusterer extends GoogleMapOverlayviewMixin(PolymerElement)
   }
 
   _initClusterIconTemplate() {
-    this._flattenNodesObs = new FlattenedNodesObserver(this.$.clustericontemplate, (info) => {
-      const {
-        addedNodes,
-        // target,
-        // removedNodes,
-      } = info;
-      let clusterIconTemplateContent = addedNodes.filter(n => n.nodeType === Node.ELEMENT_NODE);
-
-      if (clusterIconTemplateContent.length > 0) {
-        clusterIconTemplateContent = clusterIconTemplateContent[0];
-        clusterIconTemplateContent.removeAttribute("slot");
-      } else {
-        clusterIconTemplateContent = document.createElement('google-map-defaulticon');
-      }
-
-      this._clusterIconTemplate = document.createElement('google-map-markercluster');
-      this._clusterIconTemplate.appendChild(clusterIconTemplateContent);
-    });
+    var clusterIconTemplateContent = this.$.clustericontemplate.assignedNodes({flatten:true})
+          .filter(n => n.nodeType === Node.ELEMENT_NODE);
+    if (clusterIconTemplateContent.length > 0) {
+      clusterIconTemplateContent = clusterIconTemplateContent[0];
+      clusterIconTemplateContent.removeAttribute("slot");
+    }
+    else {
+      clusterIconTemplateContent = document.createElement('google-map-defaulticon');
+    }
+    this._clusterIconTemplate = document.createElement('google-map-markercluster');
+    this._clusterIconTemplate.appendChild(clusterIconTemplateContent);
   }
 
   /**
