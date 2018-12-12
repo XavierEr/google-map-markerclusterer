@@ -37,8 +37,8 @@ export const GoogleMapOverlayviewMixin = dedupingMixin((superClass) => {
       }
     }
 
-    ready() {
-      super.ready();
+    constructor() {
+      super();
       this._initOverlay();
     }
 
