@@ -1,4 +1,3 @@
-import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 
 import { GoogleMapOverlayviewMixin } from './google-map-overlayview-mixin.js';
@@ -71,19 +70,19 @@ class GoogleMapMarkerCluster extends GoogleMapOverlayviewMixin(PolymerElement) {
   }
 
   _initClusterSubIcon() {
-    this._flattenNodesObs = new FlattenedNodesObserver(this.$.overlayContent, (info) => {
-      const contents = info.addedNodes.filter(n => n.ELEMENT_NODE === Node.ELEMENT_NODE);
+    const contents =
+      this.$.overlayContent
+        .assignedNodes({ flatten: true })
+        .filter(n => n.ELEMENT_NODE === Node.ELEMENT_NODE);
 
-      if (contents.length > 0) {
-        this.clusterSubIcon = contents[0];
-        this.clusterSubIcon.markers = this.markers;
-      }
-    });
+    if (contents.length > 0) {
+      this.clusterSubIcon = contents[0];
+      this.clusterSubIcon.markers = this.markers;
+    }
   }
 
   disconnectedCallback() {
     this.map = null;
-    this._flattenNodesObs.disconnect();
   }
 
   /**
