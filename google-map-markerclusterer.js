@@ -1,5 +1,4 @@
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
-import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 
@@ -174,7 +173,6 @@ class GoogleMapMarkerclusterer extends GoogleMapOverlayviewMixin(PolymerElement)
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this._flattenNodesObs.disconnect();
   }
 
   _initClusterIconTemplate() {
